@@ -34,11 +34,15 @@ public class ChatClient extends JFrame {
     private Map<String, List<ChatMessage>> conversations
             = new HashMap<>();
 
-    private final Color NAVY = new Color(24, 49, 83);
-    private final Color BLUE = new Color(37, 99, 235);
-    private final Color BG = new Color(248, 250, 252);
-    private final Color TEXT = new Color(51, 65, 85);
-    private final Color BORDER = new Color(226, 232, 240);
+    private final Color NAVY = new Color(15, 23, 42);
+    private final Color BLUE = new Color(59, 130, 246);
+    private final Color BG = new Color(11, 18, 32);
+    private final Color TEXT = new Color(226, 232, 240);
+    private final Color BORDER = new Color(36, 50, 71);
+    private final Color SURFACE = new Color(17, 28, 46);
+    private final Color MUTED = new Color(148, 163, 184);
+    private final Color OWN_BUBBLE = new Color(30, 58, 95);
+    private final Color OTHER_BUBBLE = new Color(30, 41, 59);
 
     // Message model
     private static class ChatMessage {
@@ -67,9 +71,13 @@ public class ChatClient extends JFrame {
         private JButton connectButton;
         private JLabel statusLabel;
 
-        private final Color NAVY = new Color(24, 49, 83);
-        private final Color BLUE = new Color(37, 99, 235);
-        private final Color BG = new Color(248, 250, 252);
+        private final Color NAVY = new Color(15, 23, 42);
+        private final Color BLUE = new Color(59, 130, 246);
+        private final Color BG = new Color(11, 18, 32);
+        private final Color SURFACE = new Color(17, 28, 46);
+        private final Color TEXT = new Color(226, 232, 240);
+        private final Color MUTED = new Color(148, 163, 184);
+        private final Color BORDER = new Color(36, 50, 71);
 
         LoginFrame() {
 
@@ -85,15 +93,15 @@ public class ChatClient extends JFrame {
 
             JPanel card = new JPanel();
             card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-            card.setBackground(Color.WHITE);
+            card.setBackground(SURFACE);
             card.setBorder(new CompoundBorder(
-                    new LineBorder(new Color(226, 232, 240), 1, true),
+                    new LineBorder(BORDER, 1, true),
                     new EmptyBorder(35, 38, 35, 38)
             ));
 
             JLabel logo = new JLabel("C");
             logo.setOpaque(true);
-            logo.setBackground(new Color(219, 234, 254));
+            logo.setBackground(new Color(30, 58, 95));
             logo.setForeground(BLUE);
             logo.setFont(new Font("SansSerif", Font.BOLD, 30));
             logo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -103,40 +111,43 @@ public class ChatClient extends JFrame {
 
             JLabel title = new JLabel("ChatConnect");
             title.setFont(new Font("SansSerif", Font.BOLD, 27));
-            title.setForeground(NAVY);
+            title.setForeground(TEXT);
             title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel subtitle = new JLabel(
                     "Connect. Communicate. Collaborate."
             );
             subtitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
-            subtitle.setForeground(Color.GRAY);
+            subtitle.setForeground(MUTED);
             subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel welcome = new JLabel("Welcome back!");
             welcome.setFont(new Font("SansSerif", Font.BOLD, 19));
-            welcome.setForeground(NAVY);
+            welcome.setForeground(TEXT);
             welcome.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             JLabel description = new JLabel(
                     "Enter your username to join the conversation."
             );
             description.setFont(new Font("SansSerif", Font.PLAIN, 12));
-            description.setForeground(Color.GRAY);
+            description.setForeground(MUTED);
             description.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             JLabel usernameLabel = new JLabel("USERNAME");
             usernameLabel.setFont(new Font("SansSerif", Font.BOLD, 11));
-            usernameLabel.setForeground(new Color(51, 65, 85));
+            usernameLabel.setForeground(TEXT);
             usernameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             usernameField = new JTextField();
             usernameField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+            usernameField.setBackground(BG);
+            usernameField.setForeground(TEXT);
+            usernameField.setCaretColor(BLUE);
             usernameField.setMaximumSize(
                     new Dimension(Integer.MAX_VALUE, 45)
             );
             usernameField.setBorder(new CompoundBorder(
-                    new LineBorder(new Color(203, 213, 225), 1, true),
+                    new LineBorder(BORDER, 1, true),
                     new EmptyBorder(10, 13, 10, 13)
             ));
 
@@ -158,14 +169,14 @@ public class ChatClient extends JFrame {
             statusLabel.setFont(
                     new Font("SansSerif", Font.PLAIN, 12)
             );
-            statusLabel.setForeground(new Color(220, 38, 38));
+            statusLabel.setForeground(new Color(248, 113, 113));
             statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             JLabel footer = new JLabel(
                     "Real-Time Messaging Application"
             );
             footer.setFont(new Font("SansSerif", Font.PLAIN, 11));
-            footer.setForeground(Color.GRAY);
+            footer.setForeground(MUTED);
             footer.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             card.add(logo);
@@ -225,7 +236,10 @@ public class ChatClient extends JFrame {
                 protected ConnectionData doInBackground()
                         throws Exception {
 
-                    Socket socket = new Socket("localhost", 5000);
+                    Socket socket = new Socket();
+                    socket.connect(new InetSocketAddress("localhost", 5000), 5000);
+                    socket.setTcpNoDelay(true);
+                    socket.setKeepAlive(true);
 
                     BufferedReader input = new BufferedReader(
                             new InputStreamReader(
@@ -269,7 +283,7 @@ public class ChatClient extends JFrame {
                         connectButton.setText("Connect to Chat");
 
                         statusLabel.setForeground(
-                                new Color(220, 38, 38)
+                                new Color(248, 113, 113)
                         );
 
                         statusLabel.setText(
@@ -337,7 +351,7 @@ public class ChatClient extends JFrame {
         appTitle.setFont(new Font("SansSerif", Font.BOLD, 23));
 
         statusLabel = new JLabel("● Connected");
-        statusLabel.setForeground(new Color(110, 231, 183));
+        statusLabel.setForeground(new Color(52, 211, 153));
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
 
         header.add(appTitle, BorderLayout.WEST);
@@ -347,25 +361,25 @@ public class ChatClient extends JFrame {
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setPreferredSize(new Dimension(235, 0));
-        sidebar.setBackground(Color.WHITE);
+        sidebar.setBackground(SURFACE);
         sidebar.setBorder(new MatteBorder(0, 0, 0, 1, BORDER));
 
         JLabel profileTitle = new JLabel("YOUR PROFILE");
         profileTitle.setFont(new Font("SansSerif", Font.BOLD, 12));
-        profileTitle.setForeground(Color.GRAY);
+        profileTitle.setForeground(MUTED);
         profileTitle.setBorder(new EmptyBorder(25, 20, 15, 10));
 
         JPanel profilePanel = new JPanel(
                 new FlowLayout(FlowLayout.LEFT, 12, 8)
         );
-        profilePanel.setBackground(Color.WHITE);
+        profilePanel.setBackground(SURFACE);
         profilePanel.setMaximumSize(new Dimension(235, 65));
 
         JLabel avatar = new JLabel(
                 username.substring(0, 1).toUpperCase()
         );
         avatar.setOpaque(true);
-        avatar.setBackground(new Color(219, 234, 254));
+        avatar.setBackground(OWN_BUBBLE);
         avatar.setForeground(BLUE);
         avatar.setFont(new Font("SansSerif", Font.BOLD, 20));
         avatar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -373,14 +387,14 @@ public class ChatClient extends JFrame {
 
         JLabel userName = new JLabel(username);
         userName.setFont(new Font("SansSerif", Font.BOLD, 15));
-        userName.setForeground(NAVY);
+        userName.setForeground(TEXT);
 
         profilePanel.add(avatar);
         profilePanel.add(userName);
 
         JLabel roomTitle = new JLabel("CONVERSATIONS");
         roomTitle.setFont(new Font("SansSerif", Font.BOLD, 12));
-        roomTitle.setForeground(Color.GRAY);
+        roomTitle.setForeground(MUTED);
         roomTitle.setBorder(new EmptyBorder(25, 20, 12, 10));
 
         // GROUP CHAT BUTTON
@@ -390,7 +404,7 @@ public class ChatClient extends JFrame {
 
         JLabel onlineTitle = new JLabel("ONLINE MEMBERS");
         onlineTitle.setFont(new Font("SansSerif", Font.BOLD, 12));
-        onlineTitle.setForeground(Color.GRAY);
+        onlineTitle.setForeground(MUTED);
         onlineTitle.setBorder(new EmptyBorder(25, 20, 10, 10));
 
         onlineCountLabel = new JLabel("0");
@@ -398,7 +412,7 @@ public class ChatClient extends JFrame {
         onlineCountLabel.setForeground(BLUE);
 
         JPanel onlineHeading = new JPanel(new BorderLayout());
-        onlineHeading.setBackground(Color.WHITE);
+        onlineHeading.setBackground(SURFACE);
         onlineHeading.setBorder(new EmptyBorder(0, 20, 10, 15));
         onlineHeading.setMaximumSize(new Dimension(235, 30));
 
@@ -408,15 +422,16 @@ public class ChatClient extends JFrame {
         onlineUsersModel = new DefaultListModel<>();
         onlineUsersList = new JList<>(onlineUsersModel);
 
-        onlineUsersList.setBackground(Color.WHITE);
+        onlineUsersList.setBackground(SURFACE);
         onlineUsersList.setForeground(TEXT);
         onlineUsersList.setFont(
                 new Font("SansSerif", Font.PLAIN, 13)
         );
         onlineUsersList.setFixedCellHeight(35);
         onlineUsersList.setSelectionBackground(
-                new Color(219, 234, 254)
+                new Color(30, 58, 95)
         );
+        onlineUsersList.setSelectionForeground(TEXT);
         onlineUsersList.setBorder(new EmptyBorder(5, 12, 5, 5));
 
         onlineUsersList.setCellRenderer(new DefaultListCellRenderer() {
@@ -441,7 +456,7 @@ public class ChatClient extends JFrame {
                 }
 
                 label.setText("●   " + name);
-                label.setForeground(isSelected ? BLUE : TEXT);
+                label.setForeground(isSelected ? new Color(147, 197, 253) : TEXT);
                 label.setFont(
                         new Font("SansSerif", Font.PLAIN, 13)
                 );
@@ -487,7 +502,7 @@ public class ChatClient extends JFrame {
 
         chatHeading = new JLabel("Group Conversation");
         chatHeading.setFont(new Font("SansSerif", Font.BOLD, 20));
-        chatHeading.setForeground(NAVY);
+        chatHeading.setForeground(TEXT);
 
         chatSubheading = new JLabel(
                 "Messages are visible to everyone in the group"
@@ -495,7 +510,7 @@ public class ChatClient extends JFrame {
         chatSubheading.setFont(
                 new Font("SansSerif", Font.PLAIN, 12)
         );
-        chatSubheading.setForeground(Color.GRAY);
+        chatSubheading.setForeground(MUTED);
 
         JPanel headingContent = new JPanel();
         headingContent.setLayout(new BoxLayout(
@@ -512,13 +527,13 @@ public class ChatClient extends JFrame {
         messagesPanel.setLayout(new BoxLayout(
                 messagesPanel, BoxLayout.Y_AXIS
         ));
-        messagesPanel.setBackground(Color.WHITE);
+        messagesPanel.setBackground(SURFACE);
         messagesPanel.setBorder(new EmptyBorder(18, 15, 18, 15));
 
         scrollPane = new JScrollPane(messagesPanel);
         scrollPane.setBorder(new LineBorder(BORDER, 1));
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.getViewport().setBackground(SURFACE);
 
         // MESSAGE INPUT
         JPanel inputPanel = new JPanel(new BorderLayout(12, 0));
@@ -526,11 +541,14 @@ public class ChatClient extends JFrame {
 
         messageField = new JTextField();
         messageField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        messageField.setBackground(SURFACE);
+        messageField.setCaretColor(BLUE);
+        messageField.setToolTipText("Press Enter to send a message");
         messageField.setForeground(TEXT);
         messageField.setBorder(
                 new CompoundBorder(
                         new LineBorder(
-                                new Color(203, 213, 225), 1, true
+                                BORDER, 1, true
                         ),
                         new EmptyBorder(12, 14, 12, 14)
                 )
@@ -577,8 +595,8 @@ public class ChatClient extends JFrame {
     private void styleConversationButton(JButton button) {
 
         button.setFont(new Font("SansSerif", Font.BOLD, 13));
-        button.setForeground(NAVY);
-        button.setBackground(new Color(239, 246, 255));
+        button.setForeground(TEXT);
+        button.setBackground(new Color(30, 58, 95));
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setFocusPainted(false);
         button.setBorder(new EmptyBorder(12, 20, 12, 10));
@@ -655,6 +673,11 @@ public class ChatClient extends JFrame {
             return;
         }
 
+        if (message.length() > 2000) {
+            addSystemMessage("Messages are limited to 2,000 characters.");
+            return;
+        }
+
         String encodedMessage = Base64.getEncoder().encodeToString(
                 message.getBytes(java.nio.charset.StandardCharsets.UTF_8)
         );
@@ -663,6 +686,10 @@ public class ChatClient extends JFrame {
 
             // GROUP MESSAGE
             output.println("GROUP|" + encodedMessage);
+            if (output.checkError()) {
+                connectionLost();
+                return;
+            }
 
         } else {
 
@@ -670,6 +697,10 @@ public class ChatClient extends JFrame {
             output.println(
                     "PRIVATE|" + activeChat + "|" + encodedMessage
             );
+            if (output.checkError()) {
+                connectionLost();
+                return;
+            }
         }
 
         messageField.setText("");
@@ -870,15 +901,15 @@ public class ChatClient extends JFrame {
                 )
         );
 
-        messageRow.setBackground(Color.WHITE);
+        messageRow.setBackground(SURFACE);
         messageRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JPanel bubble = new JPanel(new BorderLayout(0, 7));
 
         bubble.setBackground(
                 message.ownMessage
-                        ? new Color(219, 234, 254)
-                        : new Color(241, 245, 249)
+                        ? OWN_BUBBLE
+                        : OTHER_BUBBLE
         );
 
         bubble.setBorder(new EmptyBorder(11, 14, 9, 14));
@@ -889,7 +920,7 @@ public class ChatClient extends JFrame {
 
         senderLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         senderLabel.setForeground(
-                message.ownMessage ? BLUE : NAVY
+                message.ownMessage ? BLUE : TEXT
         );
 
         JTextArea messageText = new JTextArea(message.content);
@@ -924,7 +955,7 @@ public class ChatClient extends JFrame {
 
         JLabel timeLabel = new JLabel(message.time);
         timeLabel.setFont(new Font("SansSerif", Font.PLAIN, 10));
-        timeLabel.setForeground(new Color(100, 116, 139));
+        timeLabel.setForeground(MUTED);
         timeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         bubble.add(senderLabel, BorderLayout.NORTH);
@@ -951,11 +982,11 @@ public class ChatClient extends JFrame {
 
         JLabel label = new JLabel(message);
         label.setFont(new Font("SansSerif", Font.ITALIC, 12));
-        label.setForeground(Color.GRAY);
+        label.setForeground(MUTED);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        row.setBackground(Color.WHITE);
+        row.setBackground(SURFACE);
         row.setAlignmentX(Component.LEFT_ALIGNMENT);
         row.add(label);
 

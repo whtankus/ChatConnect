@@ -111,7 +111,7 @@ public class ChatClient extends JFrame {
 
             JLabel title = new JLabel("ChatConnect");
             title.setFont(new Font("SansSerif", Font.BOLD, 27));
-            title.setForeground(NAVY);
+            title.setForeground(TEXT);
             title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel subtitle = new JLabel(
@@ -123,7 +123,7 @@ public class ChatClient extends JFrame {
 
             JLabel welcome = new JLabel("Welcome back!");
             welcome.setFont(new Font("SansSerif", Font.BOLD, 19));
-            welcome.setForeground(NAVY);
+            welcome.setForeground(TEXT);
             welcome.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             JLabel description = new JLabel(
@@ -431,6 +431,7 @@ public class ChatClient extends JFrame {
         onlineUsersList.setSelectionBackground(
                 new Color(30, 58, 95)
         );
+        onlineUsersList.setSelectionForeground(TEXT);
         onlineUsersList.setBorder(new EmptyBorder(5, 12, 5, 5));
 
         onlineUsersList.setCellRenderer(new DefaultListCellRenderer() {
@@ -501,7 +502,7 @@ public class ChatClient extends JFrame {
 
         chatHeading = new JLabel("Group Conversation");
         chatHeading.setFont(new Font("SansSerif", Font.BOLD, 20));
-        chatHeading.setForeground(NAVY);
+        chatHeading.setForeground(TEXT);
 
         chatSubheading = new JLabel(
                 "Messages are visible to everyone in the group"
@@ -907,8 +908,8 @@ public class ChatClient extends JFrame {
 
         bubble.setBackground(
                 message.ownMessage
-                        ? new Color(30, 58, 95)
-                        : new Color(241, 245, 249)
+                        ? OWN_BUBBLE
+                        : OTHER_BUBBLE
         );
 
         bubble.setBorder(new EmptyBorder(11, 14, 9, 14));
@@ -919,7 +920,7 @@ public class ChatClient extends JFrame {
 
         senderLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         senderLabel.setForeground(
-                message.ownMessage ? BLUE : NAVY
+                message.ownMessage ? BLUE : TEXT
         );
 
         JTextArea messageText = new JTextArea(message.content);
